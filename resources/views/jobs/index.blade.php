@@ -20,7 +20,7 @@
         </section>
         <section>
             <x-section-heading>Tags</x-section-heading>
-            <div class="mt-4 space-x-2">
+            <div class="mt-4">
                 @foreach ($tags as $tag)
                     {{-- <x-tag :tag="$tag"> --}}
                     <x-tag :$tag />

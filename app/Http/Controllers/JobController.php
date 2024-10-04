@@ -18,11 +18,13 @@ class JobController extends Controller
      */
     public function index()
     {
-        $jobs = Job::latest()->with(['employer', 'tags'])->get()->groupBy('featured');
+        // $jobs = Job::latest()->with(['employer', 'tags'])->get()->groupBy('featured');
+        $featuredJobs = Job::latest()->where('featured', true)->with(['employer', 'tags'])->get();
+        $jobs = Job::latest()->where('featured', false)->with(['employer', 'tags'])->get();
 
         return view('jobs.index', [
-            'featuredJobs' => $jobs[1],
-            'jobs' => $jobs[0],
+            'featuredJobs' => count($featuredJobs) > 0 ? $featuredJobs : [],
+            'jobs' => count($jobs) > 0 ? $jobs : [],
             'tags' => Tag::all(),
         ]);
     }
@@ -40,7 +42,6 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $attributes = $request->validate([
             'title' => ['required'],
             'salary' => ['required'],

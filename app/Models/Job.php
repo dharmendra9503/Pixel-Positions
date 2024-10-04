@@ -17,7 +17,10 @@ class Job extends Model
 
     public function tag(string $name): void
     {
-        $tag = Tag::firstOrCreate(['name' => $name]);
+        $tag = Tag::where('name', $name)->first();
+        if (!$tag) {
+            $tag = Tag::create(['name' => $name]);
+        }
         $this->tags()->attach($tag);
     }
 
